@@ -67,14 +67,29 @@ func onExit() {
 	stopProxy()
 }
 
-func buildConfig() *config.Config {
-	return &config.Config{
-		Host:                   "127.0.0.1",
-		Port:                   proxyPort,
-		AuthDir:                "~/.cli-proxy-api",
-		UsageStatisticsEnabled: true,
-		RequestRetry:           3,
+func buildConfig() (*config.Config, string) {
+	home, _ := os.UserHomeDir()
+	cfgDir := filepath.Join(home, ".cli-proxy-api")
+	os.MkdirAll(cfgDir, 0700)
+	cfgPath := filepath.Join(cfgDir, "config.yaml")
+
+	// Write config file if it doesn't exist
+	if _, err := os.Stat(cfgPath); os.IsNotExist(err) {
+		cfgData := fmt.Sprintf("host: \"127.0.0.1\"\nport: %d\nauth-dir: \"%s\"\nrequest-retry: 3\nusage-statistics-enabled: true\n", proxyPort, cfgDir)
+		os.WriteFile(cfgPath, []byte(cfgData), 0644)
 	}
+
+	cfg, _ := config.LoadConfig(cfgPath)
+	if cfg == nil {
+		cfg = &config.Config{
+			Host:                   "127.0.0.1",
+			Port:                   proxyPort,
+			AuthDir:                cfgDir,
+			UsageStatisticsEnabled: true,
+			RequestRetry:           3,
+		}
+	}
+	return cfg, cfgPath
 }
 
 func hasTokens() bool {
@@ -96,7 +111,7 @@ func hasTokens() bool {
 }
 
 func doLogin() {
-	cfg := buildConfig()
+	cfg, _ := buildConfig()
 	store := auth.NewFileTokenStore()
 
 	home, _ := os.UserHomeDir()
@@ -123,12 +138,14 @@ func startProxy(status *systray.MenuItem) {
 		}
 	}
 
-	cfg := buildConfig()
+	cfg, cfgPath := buildConfig()
 
 	svc, err := cliproxy.NewBuilder().
 		WithConfig(cfg).
+		WithConfigPath(cfgPath).
 		Build()
 	if err != nil {
+		logErr(fmt.Sprintf("Build error: %v", err))
 		status.SetTitle(fmt.Sprintf("Error: %v", err))
 		systray.SetTooltip("Droid OAuth Win - Error")
 		return
@@ -150,6 +167,7 @@ func startProxy(status *systray.MenuItem) {
 	mu.Unlock()
 
 	if !intentional && err != nil {
+		logErr(fmt.Sprintf("Run error: %v", err))
 		status.SetTitle("Proxy stopped unexpectedly")
 		systray.SetTooltip("Droid OAuth Win - Stopped")
 	}
@@ -163,6 +181,16 @@ func stopProxy() {
 		cancel()
 		cancel = nil
 	}
+}
+
+func logErr(msg string) {
+	home, _ := os.UserHomeDir()
+	f, err := os.OpenFile(filepath.Join(home, ".cli-proxy-api", "droid-oauth-win.log"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+	fmt.Fprintln(f, msg)
 }
 
 // ensureDroidConfig writes custom models to Factory Droid's settings.json if not already present.
