@@ -4,21 +4,11 @@
 
 <p align="center">Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.</p>
 
-## Install
+## Quick Install
 
 ```powershell
 irm https://raw.githubusercontent.com/doasfrancisco/droid-oauth-win/main/install.ps1 | iex
 ```
-
-## How it works
-
-```
-Factory Droid → http://127.0.0.1:8317/v1 → [OAuth tokens] → OpenAI API
-```
-
-One exe. Double-click it. First launch opens your browser for OpenAI sign-in. After that, it sits in the system tray and proxies Droid requests through your subscription.
-
-Droid's `settings.json` is auto-configured with GPT-5.4 and GPT-5.3-Codex models pointing at the local proxy.
 
 ## Install (pre-built)
 
@@ -44,6 +34,16 @@ go build -ldflags "-H windowsgui" -o DroidOAuthWindows.exe .
 ```
 
 The `-H windowsgui` flag makes it a GUI app — no console window on launch.
+
+## How it works
+
+```
+Factory Droid → http://127.0.0.1:8317/v1 → [OAuth tokens] → OpenAI API
+```
+
+One exe. Double-click it. First launch opens your browser for OpenAI sign-in. After that, it sits in the system tray and proxies Droid requests through your subscription.
+
+Droid's `settings.json` is auto-configured with GPT-5.4 and GPT-5.3-Codex models pointing at the local proxy.
 
 ### Modify the exe
 
