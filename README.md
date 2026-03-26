@@ -2,7 +2,7 @@
 
 Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.
 
-![](droid_proxy_windows.png)
+<p align="center"><img src="droid_proxy_windows.png" width="200"></p>
 
 ## How it works
 
