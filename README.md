@@ -4,7 +4,7 @@
 
 <p align="center">Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.</p>
 
-## Try now
+## Install
 
 ```powershell
 irm https://raw.githubusercontent.com/doasfrancisco/droid-oauth-win/main/install.ps1 | iex
