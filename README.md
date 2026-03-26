@@ -1,8 +1,14 @@
-# droid-oauth-win
+# Droid OAuth Windows
 
 Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.
 
 <p align="center"><img src="droid_proxy_windows.png" width="200"></p>
+
+## Try now
+
+```powershell
+irm https://raw.githubusercontent.com/doasfrancisco/droid-oauth-win/main/install.ps1 | iex
+```
 
 ## How it works
 
@@ -16,7 +22,7 @@ Droid's `settings.json` is auto-configured with GPT-5.4 and GPT-5.3-Codex models
 
 ## Install (pre-built)
 
-1. Download `droid-oauth-win.exe` from [Releases](../../releases)
+1. Download `DroidOAuthWindows.exe` from [Releases](../../releases)
 2. Double-click
 3. Sign in with your OpenAI account (first time only)
 4. Open Droid, select **GPT-5.4 [Plus]** or **GPT-5.3-Codex [Plus]**
@@ -31,10 +37,10 @@ Droid's `settings.json` is auto-configured with GPT-5.4 and GPT-5.3-Codex models
 ### Build
 
 ```powershell
-git clone https://github.com/pulsosalud/droid-oauth-win.git
+git clone https://github.com/doasfrancisco/droid-oauth-win.git
 cd droid-oauth-win
 go mod tidy
-go build -ldflags "-H windowsgui" -o droid-oauth-win.exe .
+go build -ldflags "-H windowsgui" -o DroidOAuthWindows.exe .
 ```
 
 The `-H windowsgui` flag makes it a GUI app — no console window on launch.
@@ -55,7 +61,7 @@ The entire app is `main.go`. Here's what each part does:
 After changes:
 
 ```powershell
-go build -ldflags "-H windowsgui" -o droid-oauth-win.exe .
+go build -ldflags "-H windowsgui" -o DroidOAuthWindows.exe .
 ```
 
 ### Add more models
