@@ -1,8 +1,8 @@
-# Droid OAuth Windows
+<p align="center"><img src="droid_proxy_windows.png" width="120"></p>
 
-Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.
+<h1 align="center">Droid OAuth Windows</h1>
 
-<p align="center"><img src="droid_proxy_windows.png" width="200"></p>
+<p align="center">Use your ChatGPT Plus/Pro subscription with Factory Droid on Windows via OAuth proxy.</p>
 
 ## Try now
 
